@@ -1,0 +1,26 @@
+workflows:
+  my-workflow:
+    name: truck-it user ios
+    environment:
+      xcode: latest
+      cocoapods: default
+      vars:
+          XCODE_WORKSPACE: "Truck It User" # <-- Put the name of your project here. 
+          XCODE_SCHEME: "Truck It User Application" # <-- Put the name of your scheme here.
+    triggering:
+        events:
+          - push
+          - tag
+          - pull_request     
+    scripts:         
+      - name: Build ipa for distribution
+        script: - xcode-project build-ipa --workspace "ios/Runner.xcworkspace" --scheme "Runner"
+    artifacts:
+         - build/ios/ipa/*.ipa
+         - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
+    publishing:
+      email:
+        recipients:
+          - yuvaraj.ganesan@mobile-di.com
+      # scripts:
+      #  - echo 'Post-publish script'
